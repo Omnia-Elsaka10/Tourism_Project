@@ -1,0 +1,7 @@
+{
+  "_comment": "Replace these example entries with your actual place names (must match the folder names from your dataset) and real descriptions.",
+  "example_place_name": {
+    "description": "A short description shown in the app when this place is recognized.",
+    "category": "temple"
+  }
+}
