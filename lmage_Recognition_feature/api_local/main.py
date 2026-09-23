@@ -1,16 +1,3 @@
-"""
-main.py
--------
-FastAPI service exposing the landmark recognition pipeline as a real API.
-Uses the exact same CLIP embedding logic validated in the Colab notebook.
-
-Run locally:
-    uvicorn main:app --reload --host 0.0.0.0 --port 8000
-
-Test:
-    curl -X POST "http://localhost:8000/recognize" -F "file=@test_photo.jpg"
-"""
-
 import os
 import json
 import shutil
@@ -34,19 +21,19 @@ PLACES_INFO_PATH = "places_info.json"
 CONFIDENCE_THRESHOLD = 0.75
 TOP_K = 5
 
-# App + CORS (needed so a mobile app / browser can call this API)
+# App + CORS 
 
 
 app = FastAPI(title="Landmark Recognition API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # tighten this to your app's domain before production
+    allow_origins=["*"],  
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load everything ONCE at startup (not per-request, that would be very slow)
+# Load everything ONCE at startup 
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Loading CLIP model on {device}...")
@@ -65,9 +52,7 @@ faiss_index = faiss.read_index(INDEX_PATH)
 with open(MAPPING_PATH, "r", encoding="utf-8") as f:
     mapping = json.load(f)
 
-# Optional: extra info per place (description, category, etc.)
-# Create places_info.json yourself, shaped like:
-# { "luxor_temple": {"description": "...", "category": "temple"}, ... }
+
 places_info = {}
 if os.path.exists(PLACES_INFO_PATH):
     with open(PLACES_INFO_PATH, "r", encoding="utf-8") as f:
